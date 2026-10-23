@@ -1,0 +1,530 @@
+[
+  {
+    "id": "flow_smarthome",
+    "type": "tab",
+    "label": "Smart Home Monitor",
+    "disabled": false,
+    "info": "Práctica 8 - Gestión de IoT. Recibe datos por HTTP POST en /actualizar_datos y los muestra en /ui"
+  },
+  {
+    "id": "ui_base1",
+    "type": "ui_base",
+    "theme": {
+      "name": "theme-light",
+      "lightTheme": {
+        "default": "#0094CE",
+        "baseColor": "#0094CE",
+        "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+        "edited": true,
+        "reset": false
+      },
+      "darkTheme": {
+        "default": "#097479",
+        "baseColor": "#097479",
+        "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+        "edited": false
+      },
+      "customTheme": {
+        "name": "Untitled Theme 1",
+        "default": "#4B7930",
+        "baseColor": "#4B7930",
+        "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+      },
+      "themeState": {
+        "base-color": {
+          "default": "#0094CE",
+          "value": "#0094CE",
+          "edited": false
+        },
+        "page-titlebar-backgroundColor": {
+          "value": "#0094CE",
+          "edited": false
+        },
+        "page-backgroundColor": {
+          "value": "#fafafa",
+          "edited": false
+        },
+        "page-sidebar-backgroundColor": {
+          "value": "#ffffff",
+          "edited": false
+        },
+        "group-textColor": {
+          "value": "#1bbfff",
+          "edited": false
+        },
+        "group-borderColor": {
+          "value": "#ffffff",
+          "edited": false
+        },
+        "group-backgroundColor": {
+          "value": "#ffffff",
+          "edited": false
+        },
+        "widget-textColor": {
+          "value": "#111111",
+          "edited": false
+        },
+        "widget-backgroundColor": {
+          "value": "#0094ce",
+          "edited": false
+        },
+        "widget-borderColor": {
+          "value": "#ffffff",
+          "edited": false
+        },
+        "base-font": {
+          "value": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif"
+        }
+      },
+      "angularTheme": {
+        "primary": "indigo",
+        "accents": "blue",
+        "warn": "red",
+        "background": "grey",
+        "palette": "light"
+      }
+    },
+    "site": {
+      "name": "Smart Home Monitor",
+      "hideToolbar": "false",
+      "allowSwipe": "false",
+      "lockMenu": "false",
+      "allowTempTheme": "true",
+      "dateFormat": "DD/MM/YYYY",
+      "sizes": {
+        "sx": 48,
+        "sy": 48,
+        "gx": 6,
+        "gy": 6,
+        "cx": 6,
+        "cy": 6,
+        "px": 0,
+        "py": 0
+      }
+    }
+  },
+  {
+    "id": "ui_tab1",
+    "type": "ui_tab",
+    "name": "Smart Home",
+    "icon": "dashboard",
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "grp_clima",
+    "type": "ui_group",
+    "name": "Clima",
+    "tab": "ui_tab1",
+    "order": 1,
+    "disp": true,
+    "width": "6",
+    "collapse": false,
+    "className": ""
+  },
+  {
+    "id": "grp_seg",
+    "type": "ui_group",
+    "name": "Seguridad",
+    "tab": "ui_tab1",
+    "order": 2,
+    "disp": true,
+    "width": "6",
+    "collapse": false,
+    "className": ""
+  },
+  {
+    "id": "grp_ener",
+    "type": "ui_group",
+    "name": "Energía",
+    "tab": "ui_tab1",
+    "order": 3,
+    "disp": true,
+    "width": "6",
+    "collapse": false,
+    "className": ""
+  },
+  {
+    "id": "http_in",
+    "type": "http in",
+    "z": "flow_smarthome",
+    "name": "POST /actualizar_datos",
+    "url": "/actualizar_datos",
+    "method": "post",
+    "upload": false,
+    "swaggerDoc": "",
+    "x": 160,
+    "y": 200,
+    "wires": [
+      [
+        "dbg_raw",
+        "fn_proc",
+        "chg_resp"
+      ]
+    ]
+  },
+  {
+    "id": "dbg_raw",
+    "type": "debug",
+    "z": "flow_smarthome",
+    "name": "Debug: paquete recibido",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "tostatus": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 440,
+    "y": 100,
+    "wires": []
+  },
+  {
+    "id": "chg_resp",
+    "type": "change",
+    "z": "flow_smarthome",
+    "name": "Respuesta OK",
+    "rules": [
+      {
+        "t": "set",
+        "p": "payload",
+        "pt": "msg",
+        "to": "{\"status\":\"ok\"}",
+        "tot": "json"
+      },
+      {
+        "t": "set",
+        "p": "statusCode",
+        "pt": "msg",
+        "to": "200",
+        "tot": "num"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 430,
+    "y": 300,
+    "wires": [
+      [
+        "http_resp"
+      ]
+    ]
+  },
+  {
+    "id": "http_resp",
+    "type": "http response",
+    "z": "flow_smarthome",
+    "name": "",
+    "statusCode": "",
+    "headers": {
+      "content-type": "application/json"
+    },
+    "x": 640,
+    "y": 300,
+    "wires": []
+  },
+  {
+    "id": "fn_proc",
+    "type": "function",
+    "z": "flow_smarthome",
+    "name": "Extraer y normalizar JSON",
+    "func": "// ===== Smart Home Monitor: validación, extracción y normalización =====\n// Entrada : msg.payload = JSON del sensor, p.ej.\n//   {\"temperatura\":27.5,\"humedad_suelo\":43,\"gas\":180,\"intrusion\":false,\"consumo\":320}\n// Salidas : 1 Temperatura | 2 Gas | 3 Humedad suelo | 4 Estado intrusión\n//           5 Alertas (toast) | 6 Consumo | 7 Última actualización\n\nvar datos = msg.payload;\n\n// 1) Si llega como texto, convertirlo a objeto\nif (typeof datos === \"string\") {\n    try { datos = JSON.parse(datos); }\n    catch (e) { node.warn(\"JSON inválido: \" + e.message); return null; }\n}\nif (datos === null || typeof datos !== \"object\") {\n    node.warn(\"Payload vacío o no válido\");\n    return null;\n}\n\n// 2) Convertir a número de forma segura (devuelve null si no es válido)\nfunction num(v) {\n    var n = Number(v);\n    return (v === undefined || v === null || v === \"\" || !isFinite(n)) ? null : n;\n}\n\nvar temperatura = num(datos.temperatura);\nvar gas         = num(datos.gas);\nvar suelo       = num(datos.humedad_suelo);\nvar consumo     = num(datos.consumo);\nvar intrusion   = (datos.intrusion === true || datos.intrusion === 1 ||\n                   datos.intrusion === \"1\"  || datos.intrusion === \"true\");\n\n// 3) Normalizar humedad del suelo: si llega como lectura ADC (0-4095, ESP32)\n//    se convierte a porcentaje (sensor capacitivo: más valor = más seco)\nif (suelo !== null && suelo > 100) {\n    suelo = Math.round((4095 - suelo) / 4095 * 100);\n}\nif (suelo !== null) { suelo = Math.max(0, Math.min(100, suelo)); }\n\n// 4) Construir un mensaje por widget (null = no se envía nada a esa salida)\nvar mTemp  = (temperatura !== null) ? { payload: temperatura, topic: \"Temperatura\" } : null;\nvar mGas   = (gas !== null)         ? { payload: gas,         topic: \"Gas\" } : null;\nvar mSuelo = (suelo !== null)       ? { payload: suelo,       topic: \"Humedad suelo\" } : null;\nvar mCons  = (consumo !== null)     ? { payload: consumo,     topic: \"Consumo\" } : null;\n\nvar mIntr = { payload: intrusion ? \"🚨 INTRUSIÓN DETECTADA\" : \"✅ Sin intrusión\" };\n\n// 5) Alertas (solo se dispara si hay condición crítica)\nvar alertas = [];\nif (intrusion)                          alertas.push(\"Intrusión detectada en el hogar\");\nif (gas !== null && gas > 400)          alertas.push(\"Nivel de gas peligroso: \" + gas + \" ppm\");\nif (temperatura !== null && temperatura > 40) alertas.push(\"Temperatura crítica: \" + temperatura + \" °C\");\nvar mAlerta = alertas.length ? { payload: alertas.join(\" | \"), topic: \"ALERTA\" } : null;\n\nvar mHora = { payload: new Date().toLocaleTimeString(\"es-PE\") };\n\nreturn [mTemp, mGas, mSuelo, mIntr, mAlerta, mCons, mHora];",
+    "outputs": 7,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 450,
+    "y": 200,
+    "wires": [
+      [
+        "g_temp"
+      ],
+      [
+        "g_gas"
+      ],
+      [
+        "chg_topic"
+      ],
+      [
+        "t_intr"
+      ],
+      [
+        "toast"
+      ],
+      [
+        "g_cons"
+      ],
+      [
+        "t_hora"
+      ]
+    ]
+  },
+  {
+    "id": "chg_topic",
+    "type": "change",
+    "z": "flow_smarthome",
+    "name": "Etiquetar serie (topic)",
+    "rules": [
+      {
+        "t": "set",
+        "p": "topic",
+        "pt": "msg",
+        "to": "Humedad de suelo (%)",
+        "tot": "str"
+      }
+    ],
+    "action": "",
+    "property": "",
+    "from": "",
+    "to": "",
+    "reg": false,
+    "x": 740,
+    "y": 200,
+    "wires": [
+      [
+        "chart_suelo"
+      ]
+    ]
+  },
+  {
+    "id": "g_temp",
+    "type": "ui_gauge",
+    "z": "flow_smarthome",
+    "name": "Gauge Temperatura",
+    "group": "grp_clima",
+    "order": 0,
+    "width": 0,
+    "height": 0,
+    "gtype": "gage",
+    "title": "Temperatura",
+    "label": "°C",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 50,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#ca3838"
+    ],
+    "seg1": "25",
+    "seg2": "35",
+    "diff": false,
+    "className": "",
+    "x": 800,
+    "y": 80,
+    "wires": []
+  },
+  {
+    "id": "g_gas",
+    "type": "ui_gauge",
+    "z": "flow_smarthome",
+    "name": "Gauge Gas",
+    "group": "grp_seg",
+    "order": 0,
+    "width": 0,
+    "height": 0,
+    "gtype": "gage",
+    "title": "Nivel de gas",
+    "label": "ppm",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 1000,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#ca3838"
+    ],
+    "seg1": "300",
+    "seg2": "600",
+    "diff": false,
+    "className": "",
+    "x": 800,
+    "y": 140,
+    "wires": []
+  },
+  {
+    "id": "chart_suelo",
+    "type": "ui_chart",
+    "z": "flow_smarthome",
+    "name": "Chart Humedad suelo",
+    "group": "grp_clima",
+    "order": 0,
+    "width": 0,
+    "height": 0,
+    "label": "Historial humedad del suelo (%)",
+    "chartType": "line",
+    "legend": "false",
+    "xformat": "HH:mm:ss",
+    "interpolate": "linear",
+    "nodata": "Esperando datos...",
+    "dot": false,
+    "ymin": "0",
+    "ymax": "100",
+    "removeOlder": "10",
+    "removeOlderPoints": "60",
+    "removeOlderUnit": "60",
+    "cutout": 0,
+    "useOneColor": false,
+    "useUTC": false,
+    "colors": [
+      "#1f77b4",
+      "#aec7e8",
+      "#ff7f0e",
+      "#2ca02c",
+      "#98df8a",
+      "#d62728",
+      "#ff9896",
+      "#9467bd",
+      "#c5b0d5"
+    ],
+    "outputs": 1,
+    "useDifferentColor": false,
+    "className": "",
+    "x": 990,
+    "y": 200,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "t_intr",
+    "type": "ui_text",
+    "z": "flow_smarthome",
+    "group": "grp_seg",
+    "order": 0,
+    "width": 0,
+    "height": 0,
+    "name": "Texto Intrusión",
+    "label": "Estado de seguridad",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "className": "",
+    "x": 800,
+    "y": 260,
+    "wires": []
+  },
+  {
+    "id": "toast",
+    "type": "ui_toast",
+    "z": "flow_smarthome",
+    "position": "top right",
+    "displayTime": "5",
+    "highlight": "#ca3838",
+    "sendall": true,
+    "outputs": 0,
+    "ok": "OK",
+    "cancel": "",
+    "raw": false,
+    "className": "",
+    "topic": "",
+    "name": "Notificación de alerta",
+    "x": 810,
+    "y": 320,
+    "wires": []
+  },
+  {
+    "id": "g_cons",
+    "type": "ui_gauge",
+    "z": "flow_smarthome",
+    "name": "Gauge Consumo",
+    "group": "grp_ener",
+    "order": 0,
+    "width": 0,
+    "height": 0,
+    "gtype": "gage",
+    "title": "Consumo eléctrico",
+    "label": "W",
+    "format": "{{value}}",
+    "min": 0,
+    "max": 1000,
+    "colors": [
+      "#00b500",
+      "#e6e600",
+      "#ca3838"
+    ],
+    "seg1": "500",
+    "seg2": "800",
+    "diff": false,
+    "className": "",
+    "x": 800,
+    "y": 380,
+    "wires": []
+  },
+  {
+    "id": "t_hora",
+    "type": "ui_text",
+    "z": "flow_smarthome",
+    "group": "grp_ener",
+    "order": 0,
+    "width": 0,
+    "height": 0,
+    "name": "Última actualización",
+    "label": "Última actualización",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "className": "",
+    "x": 820,
+    "y": 440,
+    "wires": []
+  },
+  {
+    "id": "inj_sim",
+    "type": "inject",
+    "z": "flow_smarthome",
+    "name": "Simulador ESP32 (cada 3 s)",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "3",
+    "crontab": "",
+    "once": false,
+    "onceDelay": 0.1,
+    "topic": "",
+    "payload": "",
+    "payloadType": "date",
+    "x": 170,
+    "y": 440,
+    "wires": [
+      [
+        "fn_sim"
+      ]
+    ],
+    "d": true
+  },
+  {
+    "id": "fn_sim",
+    "type": "function",
+    "z": "flow_smarthome",
+    "name": "Generar datos aleatorios",
+    "func": "// Simulador del microcontrolador (ESP32): genera datos aleatorios\nvar p = {\n    temperatura:   Math.round((22 + Math.random() * 14) * 10) / 10,\n    humedad_suelo: Math.round(Math.random() * 100),\n    gas:           Math.round(80 + Math.random() * 450),\n    intrusion:     Math.random() > 0.85,\n    consumo:       Math.round(150 + Math.random() * 600)\n};\nmsg.payload = p;\nreturn msg;",
+    "outputs": 1,
+    "timeout": 0,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 430,
+    "y": 440,
+    "wires": [
+      [
+        "fn_proc"
+      ]
+    ]
+  },
+  {
+    "id": "cmt1",
+    "type": "comment",
+    "z": "flow_smarthome",
+    "name": "1) Entrada HTTP  →  2) Procesamiento  →  3) Dashboard (/ui)",
+    "info": "",
+    "x": 300,
+    "y": 40,
+    "wires": []
+  }
+]
